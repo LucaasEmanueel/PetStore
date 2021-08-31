@@ -1,0 +1,18 @@
+{
+  "id": 2004199649,
+  "category": {
+    "id": 1,
+    "name": "AFVMRO12038LD"
+  },
+  "name": "Atena",
+  "photoUrls": [
+    "string"
+  ],
+  "tags": [
+    {
+      "id": 20213008,
+      "name": "data"
+    }
+  ],
+  "status": "Vendido"
+}
