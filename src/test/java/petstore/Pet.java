@@ -1,27 +1,32 @@
 package petstore;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utils.Data;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.contains;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class Pet {
+
+        Data data;
         String uri = "https://petstore.swagger.io/v2/pet";
 
-        public String lerJson(String caminhoJson) throws IOException {
-                return new String(Files.readAllBytes(Paths.get(caminhoJson)));
-        }
+        @BeforeMethod
+        public void setUp(){
+                data = new Data()
+;        }
 
         @Test (priority = 1)
         public void incluirPet() throws IOException {
-                String jsonBody = lerJson("db/pet1.json");
+                String jsonBody = data.lerJson("db/pet1.json");
 
                 given()
                         .contentType("application/json")
@@ -32,15 +37,15 @@ public class Pet {
                 .then()
                         .log().all()
                         .statusCode(200)
-                        .body("name", is("Atena"))
-                        .body("status", is("Para vender"))
+                        .body("name", is("DogPB"))
+                        .body("status", is("available"))
                         .body("category.name", is("AFVMRO12038LD"))
                         .body("tags.name", contains("data"));
         }
 
         @Test (priority = 2)
         public void consultarPet(){
-                String petId = "2004199649";
+                String petId = "200419964";
 
                 String token  =
                 given()
@@ -65,7 +70,7 @@ public class Pet {
 
         @Test (priority = 3)
         public void alterarPet() throws IOException {
-                String jsonBody = lerJson("db/pet2.json");
+                String jsonBody = data.lerJson("db/pet2.json");
                 given()
                         .contentType("application/json")
                         .log().all()
@@ -95,5 +100,22 @@ public class Pet {
                         .body("code", is(200))
                         .body("type", is ("unknown"))
                         .body("message", is(petId));
+        }
+
+        @Test
+        public void consultarPetPorStatus(){
+
+                String status = "available";
+
+                given()
+                        .contentType("application/json")
+                        .log().all()
+                .when()
+                        .get(uri + "/findByStatus?status=" + status)
+                .then()
+                        .log().all()
+                        .statusCode(200)
+                .body("name[]", everyItem(equalTo("DogPB")));
+
         }
 }

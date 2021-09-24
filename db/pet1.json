@@ -1,10 +1,10 @@
 {
-  "id": 2004199649,
+  "id": 200419964,
   "category": {
     "id": 1,
     "name": "AFVMRO12038LD"
   },
-  "name": "Atena",
+  "name": "DogPB",
   "photoUrls": [
     "string"
   ],
@@ -14,5 +14,5 @@
       "name": "data"
     }
   ],
-  "status": "Para vender"
+  "status": "available"
 }
